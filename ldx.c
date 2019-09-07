@@ -9,21 +9,21 @@
 #define DEVICE_NAME "LDX"
 
 #define MAX_DATA_BUFFER 15
-#define SAMPLE_DATA "Hello Device!\n"
+#define SAMPLE_DATA "Hello Device!"
 
 MODULE_LICENSE("LGPL");
 MODULE_AUTHOR("Milo");
 MODULE_DESCRIPTION("Linux Kernel Module.");
 MODULE_VERSION("0.1");
 
-/* Device Function Prototypes */
+/* F-Ops Function Prototypes */
 
 static int open_device(struct inode*, struct file*);
 static ssize_t read_device(struct file*, char*, size_t, loff_t*);
 static ssize_t write_device(struct file*, const char*, size_t, loff_t*);
 static int release_device(struct inode*, struct file*);
 
-/* Device Function Prototypes */
+/* F-Ops Function Prototypes */
 
 static int device_use_count = 0;
 
@@ -43,7 +43,7 @@ static struct file_operations f_ops = {
 
 static int __init mod_load(void) {
 
-	printk(KERN_INFO "Loading Kernel Module...\n");
+	printk(KERN_INFO "LDX: Loading Kernel Module...\n");
 
 	strncpy(data_buffer, SAMPLE_DATA, MAX_DATA_BUFFER);
 	data_p = data_buffer;
@@ -63,7 +63,7 @@ static int __init mod_load(void) {
 static void __exit mod_unload(void) {
 
 	unregister_chrdev(major, DEVICE_NAME);
-	printk(KERN_INFO "Kernel Module unloaded.\n");
+	printk(KERN_INFO "LDX: Kernel Module unloaded.\n");
 }
 
 static int open_device(struct inode* node, struct file* device_file) {	/* Proccess is opening Device File */
@@ -74,7 +74,7 @@ static int open_device(struct inode* node, struct file* device_file) {	/* Procce
 	try_module_get( THIS_MODULE );
 	device_use_count += 1;
 
-	printk(KERN_INFO "LDX Device has been opened.\n");
+	printk(KERN_INFO "A LDX Device has been opened.\n");
 
 	return 0;	
 }
@@ -123,7 +123,7 @@ static int release_device(struct inode* node, struct file* device_file) {
 
 	if(device_use_count == 0) {
 
-		printk(KERN_INFO "No Devices avaiable to close.\n");
+		printk(KERN_INFO "No LDX Devices avaiable to close.\n");
 		return 0;
 	}
 	

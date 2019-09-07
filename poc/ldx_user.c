@@ -66,7 +66,7 @@ ssize_t read_char_dev(void) {
 	char* dev_buffer = (char*) malloc(sizeof(char) * (MAX_DATA_BUFFER + 1));
 
 	ssize_t total_bytes = read(device_fd, (void*) dev_buffer, MAX_DATA_BUFFER);
-	dev_buffer[ total_bytes - 1] = '\0';
+	dev_buffer[ total_bytes ] = '\0';
 
 	printf("String read from LDX Device: %s\n", dev_buffer);
 

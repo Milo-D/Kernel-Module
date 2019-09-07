@@ -1,3 +1,5 @@
+/* Simple Char Device */
+
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/kernel.h>
@@ -26,7 +28,7 @@ static int release_device(struct inode*, struct file*);
 static int device_use_count = 0;
 
 static char data_buffer[ MAX_DATA_BUFFER ];
-static char* msg;
+static char* data_p;
 
 static int major;
 
@@ -44,7 +46,7 @@ static int __init mod_load(void) {
 	printk(KERN_INFO "Loading Kernel Module...\n");
 
 	strncpy(data_buffer, SAMPLE_DATA, MAX_DATA_BUFFER);
-	msg = data_buffer;
+	data_p = data_buffer;
 
 	major = register_chrdev(0, DEVICE_NAME, &f_ops);
 
@@ -61,7 +63,7 @@ static int __init mod_load(void) {
 static void __exit mod_unload(void) {
 
 	unregister_chrdev(major, DEVICE_NAME);
-	printk(KERN_INFO "Kernel Modul unloaded.\n");
+	printk(KERN_INFO "Kernel Module unloaded.\n");
 }
 
 static int open_device(struct inode* node, struct file* device_file) {	/* Proccess is opening Device File */
@@ -81,12 +83,12 @@ static ssize_t read_device(struct file* device_file, char* buffer, size_t buff_l
 
 	ssize_t total_bytes_read = 0;
 
-	if(*msg == 0)
-		msg = data_buffer;
+	if(*data_p == 0)
+		data_p = data_buffer;
 
-	while(buff_len != 0 && *msg != 0) {
+	while(buff_len != 0 && *data_p != 0) {
 
-		put_user( *(msg++), buffer++);
+		put_user(*(data_p++), buffer++);
 
 		buff_len -= 1;
 		total_bytes_read += 1;
@@ -97,8 +99,24 @@ static ssize_t read_device(struct file* device_file, char* buffer, size_t buff_l
 
 static ssize_t write_device(struct file* device_file, const char* buffer, size_t buff_len, loff_t* offset) {
 
-	printk(KERN_ALERT "READ-ONLY DEVICE. WRITE OPERATIONS PERMITTED.\n");
-	return -EINVAL;
+	ssize_t total_bytes_written = 0; int i = 0;
+
+	data_p = data_buffer;
+
+	if(buff_len >= MAX_DATA_BUFFER)
+		return -EINVAL;
+
+	for(i = 0; i < buff_len; i++) {
+	
+		if(__get_user(*(data_p++), buffer++) != 0)
+			return -EFAULT;
+			
+		total_bytes_written += 1;
+	}
+
+	*data_p = '\0';
+	
+	return total_bytes_written;
 }
 
 static int release_device(struct inode* node, struct file* device_file) {

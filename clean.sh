@@ -17,3 +17,8 @@ echo "Done!"
 
 echo "Cleaning LDX Directory..."
 rm ldx.ko ldx.o ldx.mod.o ldx.mod.c modules.order Module.symvers
+rm .ldx.ko.cmd .ldx.mod.o.cmd .ldx.o.cmd
+rm ./.tmp_versions/ldx.mod
+rmdir .tmp_versions
+
+echo "Done!"

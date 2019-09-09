@@ -139,7 +139,7 @@ static ssize_t write_device(struct file* device_file, const char* buffer, size_t
             return -EFAULT;
 			
         total_bytes_written += 1;
-	}
+    }
 
     *data_p = '\0';
 	
@@ -152,7 +152,7 @@ static int close_device(struct inode* node, struct file* device_file) {
 
         printk(KERN_INFO "No LDX Devices avaiable to close.\n");
         return 0;
-	}
+    }
 	
     module_put( THIS_MODULE );
     device_use_count -= 1;

@@ -53,8 +53,8 @@ static int __init mod_load(void) {
 
     if(major < 0) {
 
-	    printk(KERN_ALERT "Could not register Char Device: %s\n", DEVICE_NAME);
-	    return major;
+        printk(KERN_ALERT "Could not register Char Device: %s\n", DEVICE_NAME);
+        return major;
     }
 
     printk(KERN_INFO "Registered Char Device %s with major number: %d\n", DEVICE_NAME, major);

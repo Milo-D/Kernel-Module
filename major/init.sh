@@ -16,6 +16,8 @@
 
 #!/bin/bash
 
+make
+
 echo "Loading Kernel Module..."
 insmod ldx.ko
 

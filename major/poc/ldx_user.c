@@ -13,7 +13,7 @@
 #include <fcntl.h>
 
 #define DEVICE_FILE "/dev/ldx"
-#define MAX_DATA_BUFFER 15
+#define MAX_DATA_BUFFER 1024
 
 /* Prototypes (read and write char Device) */
 

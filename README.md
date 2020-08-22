@@ -1,4 +1,4 @@
-# LDX-Kernel-Module
+# Kernel-Module
 Simple Char Device Template
 
 This Repository demonstrates reading/writing operations on a Char Device. It contains two different
